@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper为映射的根节点，namespace指定Dao接口的完整类名
+mybatis会依据这个接口动态创建一个实现类去实现这个接口，
+而这个实现类是一个Mapper对象-->
+<mapper namespace="edu.gdkm.pojo.Users">
+	<sql id="ss">select * from</sql>
+
+    <select id="findById" parameterType="int"  resultType="edu.gdkm.pojo.Users">
+	 	<include refid="ss"/>
+			users where uid = #{id}
+	</select>
+
+	<select id="findAll" resultType="edu.gdkm.pojo.Users">
+			select * from users
+<where>
+	<if test="uname!=null and uname!=''">
+		and uname like concat('%',#{uname},'%')
+	</if>
+<if test="uage!=null and uage!=''">
+	and uage = #{uage}
+</if>
+</where>
+
+	</select>
+	<insert id="addUser" parameterType="edu.gdkm.pojo.Users"
+			keyProperty="uid" useGeneratedKeys="true">
+		insert into users(uname,uage)values(#{uname},#{uage})
+	</insert>
+
+</mapper>
